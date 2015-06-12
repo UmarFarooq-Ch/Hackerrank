@@ -7,42 +7,61 @@
 using namespace std;
 
 
+
+int calculate_min(int vetor[],int t)
+{
+    bool zero = false;
+    int menor = vetor[0];
+    if(menor == 0)
+        zero = true;
+    for(int i = 0 ; i < t;i++)
+    {
+        if(zero && vetor[i] != 0)
+        {
+            menor = vetor[i];
+            zero = false;
+        }
+        else if(menor > vetor[i] && vetor[i] > 0)
+            menor = vetor[i];
+    }
+    return menor;
+}
+
 int main() {
     int n = 0;
     cin>> n;
     int sticks[n];
-    string temp = "";
-    cin.ignore(); // The savior of the nation!!!!!
-    getline(cin,temp);
-    int menor = temp[0];
     //Searches for the min element in the array
-    for(int i = 0 ; i < temp.size();i++)
+     for(int i = 0 ; i < n;i++)
     {
-        if(temp[i] < menor)
-            menor = temp[i];
+        cin>> sticks[i];
     }
+    int menor = calculate_min(sticks,n);
     vector <int> resultado;
-    cout <<"dsad "<< temp.size();
     bool op = true;
     int num_cuts = 0;
     while(op)
     {
         op = false;
-        for ( int i = 0; i < temp.size();i++)
+        for ( int i = 0; i < n;i++)
         {
-            if(temp[i] > 0)
+            if(sticks[i] > 0)
             {
-                temp[i] -= menor;
+                sticks[i] -= menor;
                 op = true;
                 num_cuts++;
             }
         }
-        resultado.push_back(num_cuts);
+        if(num_cuts != 0)
+            resultado.push_back(num_cuts);
         num_cuts = 0;
+        menor = calculate_min(sticks,n);
     }
     for (vector<int>::iterator it = resultado.begin(); it != resultado.end(); ++it)
-        cout << ' ' << *it;
-    cout << resultado.size();
+        if(*it ==resultado.at(resultado.size() - 1))
+            cout << *it;
+        else
+            cout << *it<<endl;
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
     return 0;
 }
